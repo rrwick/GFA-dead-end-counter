@@ -5,8 +5,9 @@ authors = ["Ryan Wick <rrwick@gmail.com>"]
 edition = "2018"
 description = "GFA dead-end counter"
 rust-version = "1.66"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+repository = "https://github.com/rrwick/GFA-dead-end-counter"
+readme = "README.md"
+license = "GPL-3.0"
 
 [dependencies]
 clap = { version = "4.0", features = ["derive", "cargo", "wrap_help"] }
