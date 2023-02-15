@@ -115,6 +115,53 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_load_gfa() {
+
+        fn test_file(filename: &str) -> PathBuf {
+            let mut gfa = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+            gfa.push("tests");
+            gfa.push(filename);
+            return gfa
+        }
+
+        let (segments, links) = load_gfa(&test_file("circular.gfa"));
+        assert_eq!(segments.len(), 1);
+        assert_eq!(links.len(), 1);
+
+        let (segments, links) = load_gfa(&test_file("circular.gfa.gz"));
+        assert_eq!(segments.len(), 1);
+        assert_eq!(links.len(), 1);
+
+        let (segments, links) = load_gfa(&test_file("linear.gfa"));
+        assert_eq!(segments.len(), 1);
+        assert_eq!(links.len(), 0);
+
+        let (segments, links) = load_gfa(&test_file("linear.gfa.gz"));
+        assert_eq!(segments.len(), 1);
+        assert_eq!(links.len(), 0);
+
+        let (segments, links) = load_gfa(&test_file("empty.gfa"));
+        assert_eq!(segments.len(), 0);
+        assert_eq!(links.len(), 0);
+
+        let (segments, links) = load_gfa(&test_file("seq.fasta"));
+        assert_eq!(segments.len(), 0);
+        assert_eq!(links.len(), 0);
+
+        let (segments, links) = load_gfa(&test_file("seq.fastq"));
+        assert_eq!(segments.len(), 0);
+        assert_eq!(links.len(), 0);
+
+        let (segments, links) = load_gfa(&test_file("circular_blank_lines.gfa"));
+        assert_eq!(segments.len(), 1);
+        assert_eq!(links.len(), 1);
+
+        let (segments, links) = load_gfa(&test_file("big.gfa.gz"));
+        assert_eq!(segments.len(), 21816);
+        assert_eq!(links.len(), 9616);
+    }
+
+    #[test]
     fn test_line_parts_to_segment_name() {
         let filename = PathBuf::new();
 
