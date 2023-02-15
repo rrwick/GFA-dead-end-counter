@@ -11,3 +11,4 @@ rust-version = "1.66"
 [dependencies]
 clap = { version = "4.0", features = ["derive", "cargo", "wrap_help"] }
 flate2 = "1.0"
+rustc-hash = "1.0"

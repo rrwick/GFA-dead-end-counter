@@ -1,20 +1,20 @@
 // Copyright 2023 Ryan Wick (rrwick@gmail.com)
-// https://github.com/rrwick/GFA-Dead-End-Counter
+// https://github.com/rrwick/GFA-dead-end-counter
 
-// This file is part of GFA-Dead-End-Counter. GFA-Dead-End-Counter is free software: you can
+// This file is part of GFA-dead-end-counter. GFA-dead-end-counter is free software: you can
 // redistribute it and/or modify it under the terms of the GNU General Public License as published
 // by the Free Software Foundation, either version 3 of the License, or (at your option) any later
-// version. GFA-Dead-End-Counter is distributed in the hope that it will be useful, but WITHOUT ANY
+// version. GFA-dead-end-counter is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 // PURPOSE.  See the GNU General Public License for more details. You should have received a copy
-// of the GNU General Public License along with GFA-Dead-End-Counter. If not, see
+// of the GNU General Public License along with GFA-dead-end-counter. If not, see
 // <http://www.gnu.org/licenses/>.
 
 mod misc;
 mod gfa;
 
 use std::path::PathBuf;
-use std::collections::HashSet;
+use rustc_hash::FxHashSet;
 use clap::{Parser, crate_version, crate_description};
 
 
@@ -34,8 +34,8 @@ fn main() {
     let (segments, links) = gfa::load_gfa(&cli.gfa);
 
     // Each segment initially gets a dead start and a dead end.
-    let mut dead_starts = HashSet::new();
-    let mut dead_ends = HashSet::new();
+    let mut dead_starts = FxHashSet::default();
+    let mut dead_ends = FxHashSet::default();
     for name in segments {
         dead_starts.insert(name.clone());
         dead_ends.insert(name);

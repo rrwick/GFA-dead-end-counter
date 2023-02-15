@@ -1,13 +1,13 @@
 // Copyright 2023 Ryan Wick (rrwick@gmail.com)
-// https://github.com/rrwick/GFA-Dead-End-Counter
+// https://github.com/rrwick/GFA-dead-end-counter
 
-// This file is part of GFA-Dead-End-Counter. GFA-Dead-End-Counter is free software: you can
+// This file is part of GFA-dead-end-counter. GFA-dead-end-counter is free software: you can
 // redistribute it and/or modify it under the terms of the GNU General Public License as published
 // by the Free Software Foundation, either version 3 of the License, or (at your option) any later
-// version. GFA-Dead-End-Counter is distributed in the hope that it will be useful, but WITHOUT ANY
+// version. GFA-dead-end-counter is distributed in the hope that it will be useful, but WITHOUT ANY
 // WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 // PURPOSE.  See the GNU General Public License for more details. You should have received a copy
-// of the GNU General Public License along with GFA-Dead-End-Counter. If not, see
+// of the GNU General Public License along with GFA-dead-end-counter. If not, see
 // <http://www.gnu.org/licenses/>.
 
 use crate::misc::{quit_with_error, is_file_gzipped};
@@ -32,11 +32,11 @@ pub struct Link {
 
 /// This function reads a GFA file and returns two vectors: segment names and links.
 pub fn load_gfa(filename: &PathBuf) -> (Vec<String>, Vec<Link>) {
-    let file = match File::open(&filename) {
+    let file = match File::open(filename) {
         Ok(file) => file,
         Err(error) => panic!("There was a problem opening the file: {:?}", error),
     };
-    let reader: Box<dyn Read> = match is_file_gzipped(&filename) {
+    let reader: Box<dyn Read> = match is_file_gzipped(filename) {
         true => Box::new(GzDecoder::new(file)),
         _ => Box::new(file),
     };
