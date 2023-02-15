@@ -14,6 +14,7 @@ mod misc;
 mod gfa;
 
 use std::path::PathBuf;
+use std::collections::HashSet;
 use clap::{Parser, crate_version, crate_description};
 
 
@@ -22,6 +23,7 @@ use clap::{Parser, crate_version, crate_description};
        version = concat!("v", crate_version!()),
        about = crate_description!())]
 struct Cli {
+    /// Input graph file (GFA v1 format)
     gfa: PathBuf,
 }
 
@@ -31,6 +33,27 @@ fn main() {
     misc::check_if_file_exists(&cli.gfa);
     let (segments, links) = gfa::load_gfa(&cli.gfa);
 
-    eprintln!("{:?}", segments);  // TEMP
-    eprintln!("{:?}", links);  // TEMP
+    // Each segment initially gets a dead start and a dead end.
+    let mut dead_starts = HashSet::new();
+    let mut dead_ends = HashSet::new();
+    for name in segments {
+        dead_starts.insert(name.clone());
+        dead_ends.insert(name);
+    }
+
+    // Then dead starts/ends are removed based on the links.
+    for link in links {
+        if link.strand_a == 1 {
+            dead_ends.remove(&link.name_a);
+        } else {  // link.strand_a == -1
+            dead_starts.remove(&link.name_a);
+        }
+        if link.strand_b == 1 {
+            dead_starts.remove(&link.name_b);
+        } else {  // link.strand_b == -1
+            dead_ends.remove(&link.name_b);
+        }
+    }
+
+    println!("{}", dead_starts.len() + dead_ends.len());
 }

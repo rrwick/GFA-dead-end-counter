@@ -23,10 +23,10 @@ use std::path::PathBuf;
 /// on which strands.
 #[derive(PartialEq, Debug)]
 pub struct Link {
-    name_a: String,
-    strand_a: i32,
-    name_b: String,
-    strand_b: i32,
+    pub name_a: String,
+    pub strand_a: i32,
+    pub name_b: String,
+    pub strand_b: i32,
 }
 
 
