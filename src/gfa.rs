@@ -156,6 +156,10 @@ mod tests {
         assert_eq!(segments.len(), 1);
         assert_eq!(links.len(), 1);
 
+        let (segments, links) = load_gfa(&test_file("medium.gfa.gz"));
+        assert_eq!(segments.len(), 89);
+        assert_eq!(links.len(), 122);
+
         let (segments, links) = load_gfa(&test_file("big.gfa.gz"));
         assert_eq!(segments.len(), 21816);
         assert_eq!(links.len(), 9616);
