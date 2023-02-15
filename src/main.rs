@@ -13,13 +13,8 @@
 mod misc;
 mod gfa;
 
-use std::path::{Path, PathBuf};
-use std::collections::HashMap;
-use std::time::Instant;
-use std::fs::File;
-use std::io::prelude::*;
+use std::path::PathBuf;
 use clap::{Parser, crate_version, crate_description};
-use num_format::{Locale, ToFormattedString};
 
 
 #[derive(Parser)]
