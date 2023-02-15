@@ -31,7 +31,12 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
     misc::check_if_file_exists(&cli.gfa);
-    let (segments, links) = gfa::load_gfa(&cli.gfa);
+    println!("{}", count_dead_ends(&cli.gfa));
+}
+
+
+fn count_dead_ends(filename: &PathBuf) -> usize {
+    let (segments, links) = gfa::load_gfa(filename);
 
     // Each segment initially gets a dead start and a dead end.
     let mut dead_starts = FxHashSet::default();
@@ -55,5 +60,49 @@ fn main() {
         }
     }
 
-    println!("{}", dead_starts.len() + dead_ends.len());
+    dead_starts.len() + dead_ends.len()
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_count_dead_ends() {
+
+        fn test_file(filename: &str) -> PathBuf {
+            let mut gfa = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+            gfa.push("tests");
+            gfa.push(filename);
+            return gfa
+        }
+
+        let dead_ends = count_dead_ends(&test_file("circular.gfa"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("circular.gfa.gz"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("circular_blank_lines.gfa"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("linear.gfa"));
+        assert_eq!(dead_ends, 2);
+
+        let dead_ends = count_dead_ends(&test_file("linear.gfa.gz"));
+        assert_eq!(dead_ends, 2);
+
+        let dead_ends = count_dead_ends(&test_file("seq.fasta"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("seq.fastq"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("medium.gfa.gz"));
+        assert_eq!(dead_ends, 0);
+
+        let dead_ends = count_dead_ends(&test_file("big.gfa.gz"));
+        assert_eq!(dead_ends, 29312);
+    }
 }
