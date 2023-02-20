@@ -9,7 +9,7 @@ This is a very simple tool to count the number of dead ends in a [GFA v1](https:
 
 ### Usage
 
-The executable named `deadends` takes a GFA file as an argument, and it will print the number of dead ends in the graph to stdout. Run it like this:
+The executable named `deadends` takes a GFA file (can be gzipped) as an argument, and it will print the number of dead ends in the graph to stdout. Run it like this:
 
 ```bash
 deadends assembly.gfa
